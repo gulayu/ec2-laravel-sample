@@ -14,7 +14,38 @@
                         </div>
                     @endif
 
-                    入退店状況
+                    <div class="table-responsive">
+                        <table class="table table-bordered text-nowrap">
+                            <thead>
+                                <tr>
+                                    <th scope="col">番号</th>
+                                    <th scope="col">入店時間</th>
+                                    <th scope="col">退店時間</th>
+                                    <th scope="col">属性</th>
+                                    <th scope="col">区分</th>
+                                    <th scope="col">ドリンク</th>
+                                    <th scope="col">中学</th>
+                                    <th scope="col">料金</th>
+                                    <th scope="col">メモ</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            @foreach ($customers as $customer)
+                                <tr>
+                                    <td>{{ $customer->number }}</td>
+                                    <td>{{ $customer->enter_time }}</td>
+                                    <td>{{ $customer->exit_time }}</td>
+                                    <td>{{ $customer->member_info }}</td>
+                                    <td>{{ $customer->day_info }}</td>
+                                    <td>{{ $customer->use_drinkbar }}</td>
+                                    <td>{{ $customer->under_jrhigh }}</td>
+                                    <td>{{ $customer->fee }}</td>
+                                    <td>{{ $customer->memo }}</td>
+                                </tr>
+                            @endforeach
+                            </tbody>
+                        </table>
+                    </div> 
                 </div>
             </div>
         </div>
