@@ -21,10 +21,10 @@
                                     <th scope="col">番号</th>
                                     <th scope="col">入店時間</th>
                                     <th scope="col">退店時間</th>
-                                    <th scope="col">属性</th>
+                                    <th scope="col">顧客属性</th>
                                     <th scope="col">区分</th>
-                                    <th scope="col">ドリンク</th>
-                                    <th scope="col">中学</th>
+                                    <th scope="col">ドリンクバー</th>
+                                    <th scope="col">中学生以下</th>
                                     <th scope="col">料金</th>
                                     <th scope="col">メモ</th>
                                 </tr>
@@ -35,10 +35,10 @@
                                     <td>{{ $customer->number }}</td>
                                     <td>{{ $customer->enter_time }}</td>
                                     <td>{{ $customer->exit_time }}</td>
-                                    <td>{{ $customer->member_info }}</td>
-                                    <td>{{ $customer->day_info }}</td>
-                                    <td>{{ $customer->use_drinkbar }}</td>
-                                    <td>{{ $customer->under_jrhigh }}</td>
+                                    <td>{{ $customer->setMemberInfoDisplay($customer->member_info) }}</td>
+                                    <td>{{ $customer->setDayInfoDisplay($customer->day_info) }}</td>
+                                    <td>{{ $customer->setUseDrinkbarDisplay($customer->use_drinkbar) }}</td>
+                                    <td>{{ $customer->setUnderJrhighDisplay($customer->under_jrhigh) }}</td>
                                     <td>{{ $customer->fee }}</td>
                                     <td>{{ $customer->memo }}</td>
                                 </tr>
