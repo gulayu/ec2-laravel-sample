@@ -35,17 +35,33 @@ class UserManagementController extends Controller
     {
         // 入店時処理
         if($request->enter_time) {
+            // 簡単なバリデーション
+            $validatedDataEnter = $request->validate([
+                'number'      => 'required|numeric',
+                'day_info'    => 'required|between:1,2',
+                'member_info' => 'required|between:1,2',
+            ]);
+
             // Customerモデルを取得
             $customer = new Customer();
-
+            // 入力値をセット
             $customer->number       = $request->input('number');
             $customer->enter_time   = Carbon::now();
             $customer->day_info     = $request->input('day_info');
             $customer->member_info  = $request->input('member_info');
             $customer->use_drinkbar = $request->input('use_drinkbar');
             $customer->under_jrhigh = $request->input('under_jrhigh');
-            // バリデーション（当日で同じ番号は使えないようにチェックする）
-            
+
+            // 当日に同じ番号がないか確認
+            $today = Carbon::today();
+            $today = str_replace(' 00:00:00', '', $today);
+            $checkSameNumber = Customer::where(Customer::ENTER_TIME, 'LIKE', "$today%")
+                            ->where(Customer::NUMBER, $customer->number)
+                            ->count();
+            // 同じ番号が存在する場合、レコードを追加せずにエラーを返す
+            if ($checkSameNumber > 0) {
+                return redirect('userManagement')->with('enter_time_error', '当日の管理表に同じ管理番号が存在します');
+            }
 
             // レコード追加
             $customer->save();
@@ -61,12 +77,25 @@ class UserManagementController extends Controller
             $info->under_jrhigh = $request->input('under_jrhigh');
         };
 
+
         // 退店時処理
         if ($request->exit_time) {
+            // 簡単なバリデーション
+            $validatedDataExit = $request->validate([
+                'number'      => 'required|numeric',
+            ]);
+
+            // 当日に同じ番号があることを確認
+            $checkSameNumber = Customer::where(Customer::NUMBER, $request->input('number'))->count();
+            // 同じ番号がない場合、レコードを追加せずエラーを返す
+            if ($checkSameNumber === 0) {
+                return redirect('userManagement')->with('exit_time_error', '当日の管理表に同じ管理番号が存在しませんでした');
+            }
+
             // 対象のレコードを取得
             $customer = Customer::where(Customer::NUMBER, $request->input('number'))->first();
             $customer->exit_time = Carbon::now();
-            // TODO:バリデーション（入力された番号が存在するかチェック）
+
             // レコード更新
             $customer->save();
 
@@ -74,6 +103,7 @@ class UserManagementController extends Controller
             $info = collect();
             $info->type   = 'exit_time';
             $info->number = $request->input('number');
+            
             // TODO:料金の計算
         }
 

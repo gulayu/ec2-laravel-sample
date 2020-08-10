@@ -2,35 +2,49 @@
 
 @section('content')
 <div class="container">
+    <!-- 入店・退店処理のログ表示用 -->
     @isset($info)
-    @if($info->type == 'enter_time')
-    <div class="row mb-3">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-header">処理実行ログ</div>
-                <div class="card-body">
-                    <p class="font-weight-bold">入店処理を実行しました（<a href="{{route('home')}}">顧客一覧画面に戻る</a>）</p>
-                    <p>管理番号：{{ $info->number }}</p>
-                    <p>区分：{{ App\Model\Customer::setDayInfoDisplay($info->day_info) }}</p>
-                    <p>顧客属性：{{ App\Model\Customer::setMemberInfoDisplay($info->member_info) }}</p>
-                    <p>ドリンクバー利用：{{ App\Model\Customer::setUseDrinkbarDisplay($info->use_drinkbar) }}</p>
-                    <p>中学生以下：{{ App\Model\Customer::setUnderJrhighDisplay($info->under_jrhigh) }}</p>
+        @if($info->type == 'enter_time')
+        <div class="row mb-3">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">処理実行ログ</div>
+                    <div class="card-body">
+                        <p class="font-weight-bold">入店処理を実行しました（<a href="{{route('home')}}">顧客一覧画面に戻る</a>）</p>
+                        <p>管理番号：{{ $info->number }}</p>
+                        <p>区分：{{ App\Model\Customer::setDayInfoDisplay($info->day_info) }}</p>
+                        <p>顧客属性：{{ App\Model\Customer::setMemberInfoDisplay($info->member_info) }}</p>
+                        <p>ドリンクバー利用：{{ App\Model\Customer::setUseDrinkbarDisplay($info->use_drinkbar) }}</p>
+                        <p>中学生以下：{{ App\Model\Customer::setUnderJrhighDisplay($info->under_jrhigh) }}</p>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    @endif
-    @if($info->type == 'exit_time')
-    <div class="row mb-3">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-header">処理実行ログ</div>
-                <div class="card-body">退店処理を実行しました</div>
+        @endif
+        @if($info->type == 'exit_time')
+        <div class="row mb-3">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">処理実行ログ</div>
+                    <div class="card-body">退店処理を実行しました（<a href="{{route('home')}}">顧客一覧画面に戻る</a>）</div>
+                    <p>管理番号：{{ $info->number }}</p>
+                    <p>料金：</p>
+                </div>
             </div>
         </div>
-    </div>
-    @endif
+        @endif
     @endisset
+    <!-- エラーのフラッシュ表示用 -->
+    @if(session('enter_time_error'))
+        <div class="alert alert-danger">
+            {{ session('enter_time_error') }}
+        </div>
+    @endif
+    @if(session('exit_time_error'))
+        <div class="alert alert-danger">
+            {{ session('exit_time_error') }}
+        </div>
+    @endif
     <div class="row">
         <div class="col-sm-6 mb-3">
             <div class="card">
