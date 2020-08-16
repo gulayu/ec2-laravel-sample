@@ -18,6 +18,16 @@ class Customer extends Model
     const CREATED_AT   = 'created_at';
     const UPDATED_AT   = 'updated_at';
 
+    const MEMBER_INFO_SOLO = 1;
+    const MEMBER_INFO_GROUP = 2;
+    const DAY_INFO_WEEKDAY = 1;
+    const DAY_INFO_WEEKEND = 2;
+    const USE_DRINKBAR_TRUE = 1;
+    const UNDER_JRHIGH_TRUE = 1;
+
+    const UNDER_JRHIGH_FEE = 500;
+    const DRINKBAR_FEE = 500;
+
     // 個人orグループ
     public static function setMemberInfoDisplay($memberInfo) {
         return config('const.Customers.member_info')[$memberInfo];

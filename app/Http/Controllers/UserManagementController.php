@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Model\Customer;
+use App\Services\Utility;
 
 class UserManagementController extends Controller
 {
@@ -33,6 +34,10 @@ class UserManagementController extends Controller
      */
     public function update(Request $request)
     {
+        // 共通で使う値
+        $today = Carbon::today();
+        $today = str_replace(' 00:00:00', '', $today);
+
         // 入店時処理
         if($request->enter_time) {
             // 簡単なバリデーション
@@ -53,8 +58,6 @@ class UserManagementController extends Controller
             $customer->under_jrhigh = $request->input('under_jrhigh');
 
             // 当日に同じ番号がないか確認
-            $today = Carbon::today();
-            $today = str_replace(' 00:00:00', '', $today);
             $checkSameNumber = Customer::where(Customer::ENTER_TIME, 'LIKE', "$today%")
                             ->where(Customer::NUMBER, $customer->number)
                             ->count();
@@ -93,8 +96,19 @@ class UserManagementController extends Controller
             }
 
             // 対象のレコードを取得
-            $customer = Customer::where(Customer::NUMBER, $request->input('number'))->first();
+            $customer = Customer::where(Customer::ENTER_TIME, 'LIKE', "$today%")
+                            ->where(Customer::NUMBER, $request->input('number'))->first();
             $customer->exit_time = Carbon::now();
+
+            // 料金の計算
+            $customer->fee = Utility::calcPlaySpaceFee(
+                $customer->number,
+                $customer->enter_time,
+                $customer->exit_time,
+                $customer->day_info,
+                $customer->use_drinkbar,
+                $customer->under_jrhigh
+            );
 
             // レコード更新
             $customer->save();
@@ -103,8 +117,7 @@ class UserManagementController extends Controller
             $info = collect();
             $info->type   = 'exit_time';
             $info->number = $request->input('number');
-            
-            // TODO:料金の計算
+            $info->fee = $customer->fee;
         }
 
         return view('userManagement')->with([

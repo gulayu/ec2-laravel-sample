@@ -26,9 +26,11 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">処理実行ログ</div>
-                    <div class="card-body">退店処理を実行しました（<a href="{{route('home')}}">顧客一覧画面に戻る</a>）</div>
-                    <p>管理番号：{{ $info->number }}</p>
-                    <p>料金：</p>
+                    <div class="card-body">
+                        <p>退店処理を実行しました（<a href="{{route('home')}}">顧客一覧画面に戻る</a>）</p>
+                        <p>管理番号：{{ $info->number }}</p>
+                        <p>料金：<span class="font-weight-bold h4">{{ $info->fee }}円</span></p>
+                    </div>
                 </div>
             </div>
         </div>
