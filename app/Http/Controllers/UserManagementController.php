@@ -98,6 +98,11 @@ class UserManagementController extends Controller
             // 対象のレコードを取得
             $customer = Customer::where(Customer::ENTER_TIME, 'LIKE', "$today%")
                             ->where(Customer::NUMBER, $request->input('number'))->first();
+
+            // 料金精算済みでないことを確認
+            if ($customer->fee !== null) {
+                return redirect('userManagement')->with('exit_time_error', 'この管理番号は既に精算済みです');
+            }
             $customer->exit_time = Carbon::now();
 
             // 料金の計算
