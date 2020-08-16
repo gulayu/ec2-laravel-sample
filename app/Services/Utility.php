@@ -2,6 +2,7 @@
 namespace App\Services;
 
 use App\Model\Customer;
+use App\Model\FeePlan;
 
 class Utility
 {
@@ -24,9 +25,15 @@ class Utility
             return $totalFee;
         }
 
-        // 平日の場合は学生も通常も同じ料金プランを適用
-        if ($day_info === Customer::DAY_INFO_WEEKDAY) {
-            $totalFee = $totalFee + self::weekdayPlan($stayTime);
+        // 平日学生プランの場合
+        if ($day_info === Customer::DAY_INFO_WEEKDAY && $number >= 100) {
+            $totalFee = $totalFee + self::weekdayStudentPlan($stayTime);
+            return $totalFee;
+        }
+
+        // 平日通常プランの場合
+        if ($day_info === Customer::DAY_INFO_WEEKDAY && $number < 100) {
+            $totalFee = $totalFee + self::weekdayNormalPlan($stayTime);
             return $totalFee;
         }
 
@@ -43,12 +50,29 @@ class Utility
         }
     }
 
-    private static function weekdayPlan($stayTime)
+    private static function weekdayStudentPlan($stayTime)
     {
-        // 平日料金の計算
-        $first2hFee = 500;
-        $extension1hFee = 250;
-        $maxFee = 1000;
+        // 料金の取得
+        $feePlan = FeePlan::where(FeePlan::TYPE, 'weekdayStudent')->first();
+        $first2hFee     = $feePlan->first_2h_fee;
+        $extension1hFee = $feePlan->extension_1h_fee;
+        $maxFee         = $feePlan->max_fee;
+
+        // 平日学生料金の計算
+        $totalFee = self::baseSystem($stayTime, $first2hFee, $extension1hFee, $maxFee);
+
+        return $totalFee;
+    }
+
+    private static function weekdayNormalPlan($stayTime)
+    {
+        // 料金の取得
+        $feePlan = FeePlan::where(FeePlan::TYPE, 'weekdayNormal')->first();
+        $first2hFee     = $feePlan->first_2h_fee;
+        $extension1hFee = $feePlan->extension_1h_fee;
+        $maxFee         = $feePlan->max_fee;
+
+        // 平日通常料金の計算
         $totalFee = self::baseSystem($stayTime, $first2hFee, $extension1hFee, $maxFee);
 
         return $totalFee;
@@ -56,10 +80,13 @@ class Utility
 
     private static function weekendStudentPlan($stayTime)
     {
+        // 料金の取得
+        $feePlan = FeePlan::where(FeePlan::TYPE, 'weekendStudent')->first();
+        $first2hFee     = $feePlan->first_2h_fee;
+        $extension1hFee = $feePlan->extension_1h_fee;
+        $maxFee         = $feePlan->max_fee;
+
         // 休日学生の計算
-        $first2hFee = 1000;
-        $extension1hFee = 200;
-        $maxFee = 1500;
         $totalFee = self::baseSystem($stayTime, $first2hFee, $extension1hFee, $maxFee);
 
         return $totalFee;
@@ -67,10 +94,13 @@ class Utility
 
     private static function weekendNormalPlan($stayTime)
     {
+        // 料金の取得
+        $feePlan = FeePlan::where(FeePlan::TYPE, 'weekendNormal')->first();
+        $first2hFee     = $feePlan->first_2h_fee;
+        $extension1hFee = $feePlan->extension_1h_fee;
+        $maxFee         = $feePlan->max_fee;
+
         // 休日通常の計算
-        $first2hFee = 1000;
-        $extension1hFee = 250;
-        $maxFee = 2000;
         $totalFee = self::baseSystem($stayTime, $first2hFee, $extension1hFee, $maxFee);
 
         return $totalFee;

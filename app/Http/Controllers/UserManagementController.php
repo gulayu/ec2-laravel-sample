@@ -20,7 +20,7 @@ class UserManagementController extends Controller
     }
 
     /**
-     * Show the application dashboard.
+     * 入退店管理画面
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
@@ -31,6 +31,8 @@ class UserManagementController extends Controller
 
     /**
      * 入退店処理
+     * 
+     * @return \Illuminate\Contracts\Support\Renderable
      */
     public function update(Request $request)
     {

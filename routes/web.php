@@ -19,6 +19,13 @@ Route::get('/', function () {
 
 Auth::routes();
 
+// ホーム
 Route::get('/home', 'HomeController@index')->name('home');
+
+// 入退店管理
 Route::get('/userManagement', 'UserManagementController@index')->name('userManagement');
 Route::post('/userManagement', 'UserManagementController@update')->name('userManagement_update');
+
+// 料金システム編集
+Route::get('/feeSystem', 'FeeSystemController@index')->name('feeSystem');
+Route::post('/feeSystem', 'FeeSystemController@update')->name('feeSystem_update');
