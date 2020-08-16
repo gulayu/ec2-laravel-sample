@@ -43,18 +43,70 @@ class Utility
         }
     }
 
-    private function weekdayPlan($stayTime)
+    private static function weekdayPlan($stayTime)
     {
         // 平日料金の計算
+        $first2hFee = 500;
+        $extension1hFee = 250;
+        $maxFee = 1000;
+        $totalFee = self::baseSystem($stayTime, $first2hFee, $extension1hFee, $maxFee);
+
+        return $totalFee;
     }
 
-    private function weekendStudentPlan($stayTime)
+    private static function weekendStudentPlan($stayTime)
     {
         // 休日学生の計算
+        $first2hFee = 1000;
+        $extension1hFee = 200;
+        $maxFee = 1500;
+        $totalFee = self::baseSystem($stayTime, $first2hFee, $extension1hFee, $maxFee);
+
+        return $totalFee;
     }
 
-    private function weekendNormalPlan($stayTime)
+    private static function weekendNormalPlan($stayTime)
     {
         // 休日通常の計算
+        $first2hFee = 1000;
+        $extension1hFee = 250;
+        $maxFee = 2000;
+        $totalFee = self::baseSystem($stayTime, $first2hFee, $extension1hFee, $maxFee);
+
+        return $totalFee;
+    }
+
+    private static function baseSystem($stayTime, $first2hFee, $extension1hFee, $maxFee) {
+        // 2h未満の場合
+        if ($stayTime <= config('const.time.2h')) {
+            $fee = $first2hFee;
+            return $fee;
+        }
+
+        // 2h以降
+        if ($stayTime <= config('const.time.3h')) {
+            $fee = $first2hFee + $extension1hFee;
+        } else if ($stayTime <= config('const.time.4h')) {
+            $fee = $first2hFee + $extension1hFee * 2;
+        } else if ($stayTime <= config('const.time.5h')) {
+            $fee = $first2hFee + $extension1hFee * 3;
+        } else if ($stayTime <= config('const.time.6h')) {
+            $fee = $first2hFee + $extension1hFee * 4;
+        } else if ($stayTime <= config('const.time.7h')) {
+            $fee = $first2hFee + $extension1hFee * 5;
+        } else if ($stayTime <= config('const.time.8h')) {
+            $fee = $first2hFee + $extension1hFee * 6;
+        } else if ($stayTime <= config('const.time.9h')) {
+            $fee = $first2hFee + $extension1hFee * 7;
+        } else if ($stayTime <= config('const.time.10h')) {
+            $fee = $first2hFee + $extension1hFee * 8;
+        }
+
+        // 最大料金との比較
+        if ($fee > $maxFee) {
+            $fee = $maxFee; 
+        }
+
+        return $fee;
     }
 }
