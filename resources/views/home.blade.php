@@ -7,7 +7,7 @@
             <div class="card">
                 <div class="card-header">入退店状況</div>
 
-                <div class="card-body" style="padding-bottom: 500px">
+                <div class="card-body">
                     @if (session('status'))
                         <div class="alert alert-success" role="alert">
                             {{ session('status') }}

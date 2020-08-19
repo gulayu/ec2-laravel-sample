@@ -110,6 +110,11 @@ class Utility
         // 2h未満の場合
         if ($stayTime <= config('const.time.2h')) {
             $fee = $first2hFee;
+            // 最大料金との比較（最初の2時間が最大料金より高いことはあり得ないけど一応）
+            if ($fee > $maxFee) {
+                $fee = $maxFee; 
+            }
+
             return $fee;
         }
 

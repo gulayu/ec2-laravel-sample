@@ -11,6 +11,11 @@ class FeePlan extends Model
     const EXTENSION_1H_FEE = 'extension_1h_fee';
     const MAX_FEE          = 'max_fee';
 
+    const WEEKDAYSTUDENT = 'weekdayStudent';
+    const WEEKDAYNORMAL  = 'weekdayNormal';
+    const WEEKENDSTUDENT = 'weekendStudent';
+    const WEEKENDNORMAL  = 'weekendNormal';
+
     public static function setTypeDisplay($type) {
         switch ($type) {
             case "weekdayStudent":
