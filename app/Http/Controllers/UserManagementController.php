@@ -20,17 +20,34 @@ class UserManagementController extends Controller
     }
 
     /**
-     * Show the application dashboard.
+     * 入退店管理画面
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
     public function index()
     {
-        return view('userManagement');
+        // 今日の日付を取得（Y-m-d）
+        $today = Carbon::today();
+        $today = str_replace(' 00:00:00', '', $today);
+        
+        // 今日の入退店状況を取得
+        $customers = Customer::where(Customer::ENTER_TIME, 'LIKE', "$today%")->get();
+
+        // 画面表示用に入店・退店時間のY-m-d部分を削除
+        foreach ($customers as $customer) {
+            $customer->enter_time = str_replace("$today ", '', $customer->enter_time);
+            $customer->exit_time  = str_replace("$today ", '', $customer->exit_time);
+        }
+
+        return view('userManagement')->with([
+            'customers' => $customers,
+        ]);
     }
 
     /**
      * 入退店処理
+     * 
+     * @return \Illuminate\Contracts\Support\Renderable
      */
     public function update(Request $request)
     {
@@ -98,6 +115,11 @@ class UserManagementController extends Controller
             // 対象のレコードを取得
             $customer = Customer::where(Customer::ENTER_TIME, 'LIKE', "$today%")
                             ->where(Customer::NUMBER, $request->input('number'))->first();
+
+            // 料金精算済みでないことを確認
+            if ($customer->fee !== null) {
+                return redirect('userManagement')->with('exit_time_error', 'この管理番号は既に精算済みです');
+            }
             $customer->exit_time = Carbon::now();
 
             // 料金の計算
@@ -120,8 +142,18 @@ class UserManagementController extends Controller
             $info->fee = $customer->fee;
         }
 
+        // 今日の入退店状況を取得
+        $customers = Customer::where(Customer::ENTER_TIME, 'LIKE', "$today%")->get();
+
+        // 画面表示用に入店・退店時間のY-m-d部分を削除
+        foreach ($customers as $customer) {
+            $customer->enter_time = str_replace("$today ", '', $customer->enter_time);
+            $customer->exit_time  = str_replace("$today ", '', $customer->exit_time);
+        }
+
         return view('userManagement')->with([
             'info' => $info,
+            'customers' => $customers,
         ]);
     }
 }

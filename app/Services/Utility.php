@@ -2,6 +2,7 @@
 namespace App\Services;
 
 use App\Model\Customer;
+use App\Model\FeePlan;
 
 class Utility
 {
@@ -24,9 +25,15 @@ class Utility
             return $totalFee;
         }
 
-        // 平日の場合は学生も通常も同じ料金プランを適用
-        if ($day_info === Customer::DAY_INFO_WEEKDAY) {
-            $totalFee = $totalFee + self::weekdayPlan($stayTime);
+        // 平日学生プランの場合
+        if ($day_info === Customer::DAY_INFO_WEEKDAY && $number >= 100) {
+            $totalFee = $totalFee + self::weekdayStudentPlan($stayTime);
+            return $totalFee;
+        }
+
+        // 平日通常プランの場合
+        if ($day_info === Customer::DAY_INFO_WEEKDAY && $number < 100) {
+            $totalFee = $totalFee + self::weekdayNormalPlan($stayTime);
             return $totalFee;
         }
 
@@ -43,18 +50,98 @@ class Utility
         }
     }
 
-    private function weekdayPlan($stayTime)
+    private static function weekdayStudentPlan($stayTime)
     {
-        // 平日料金の計算
+        // 料金の取得
+        $feePlan = FeePlan::where(FeePlan::TYPE, 'weekdayStudent')->first();
+        $first2hFee     = $feePlan->first_2h_fee;
+        $extension1hFee = $feePlan->extension_1h_fee;
+        $maxFee         = $feePlan->max_fee;
+
+        // 平日学生料金の計算
+        $totalFee = self::baseSystem($stayTime, $first2hFee, $extension1hFee, $maxFee);
+
+        return $totalFee;
     }
 
-    private function weekendStudentPlan($stayTime)
+    private static function weekdayNormalPlan($stayTime)
     {
+        // 料金の取得
+        $feePlan = FeePlan::where(FeePlan::TYPE, 'weekdayNormal')->first();
+        $first2hFee     = $feePlan->first_2h_fee;
+        $extension1hFee = $feePlan->extension_1h_fee;
+        $maxFee         = $feePlan->max_fee;
+
+        // 平日通常料金の計算
+        $totalFee = self::baseSystem($stayTime, $first2hFee, $extension1hFee, $maxFee);
+
+        return $totalFee;
+    }
+
+    private static function weekendStudentPlan($stayTime)
+    {
+        // 料金の取得
+        $feePlan = FeePlan::where(FeePlan::TYPE, 'weekendStudent')->first();
+        $first2hFee     = $feePlan->first_2h_fee;
+        $extension1hFee = $feePlan->extension_1h_fee;
+        $maxFee         = $feePlan->max_fee;
+
         // 休日学生の計算
+        $totalFee = self::baseSystem($stayTime, $first2hFee, $extension1hFee, $maxFee);
+
+        return $totalFee;
     }
 
-    private function weekendNormalPlan($stayTime)
+    private static function weekendNormalPlan($stayTime)
     {
+        // 料金の取得
+        $feePlan = FeePlan::where(FeePlan::TYPE, 'weekendNormal')->first();
+        $first2hFee     = $feePlan->first_2h_fee;
+        $extension1hFee = $feePlan->extension_1h_fee;
+        $maxFee         = $feePlan->max_fee;
+
         // 休日通常の計算
+        $totalFee = self::baseSystem($stayTime, $first2hFee, $extension1hFee, $maxFee);
+
+        return $totalFee;
+    }
+
+    private static function baseSystem($stayTime, $first2hFee, $extension1hFee, $maxFee) {
+        // 2h未満の場合
+        if ($stayTime <= config('const.time.2h')) {
+            $fee = $first2hFee;
+            // 最大料金との比較（最初の2時間が最大料金より高いことはあり得ないけど一応）
+            if ($fee > $maxFee) {
+                $fee = $maxFee; 
+            }
+
+            return $fee;
+        }
+
+        // 2h以降
+        if ($stayTime <= config('const.time.3h')) {
+            $fee = $first2hFee + $extension1hFee;
+        } else if ($stayTime <= config('const.time.4h')) {
+            $fee = $first2hFee + $extension1hFee * 2;
+        } else if ($stayTime <= config('const.time.5h')) {
+            $fee = $first2hFee + $extension1hFee * 3;
+        } else if ($stayTime <= config('const.time.6h')) {
+            $fee = $first2hFee + $extension1hFee * 4;
+        } else if ($stayTime <= config('const.time.7h')) {
+            $fee = $first2hFee + $extension1hFee * 5;
+        } else if ($stayTime <= config('const.time.8h')) {
+            $fee = $first2hFee + $extension1hFee * 6;
+        } else if ($stayTime <= config('const.time.9h')) {
+            $fee = $first2hFee + $extension1hFee * 7;
+        } else if ($stayTime <= config('const.time.10h')) {
+            $fee = $first2hFee + $extension1hFee * 8;
+        }
+
+        // 最大料金との比較
+        if ($fee > $maxFee) {
+            $fee = $maxFee; 
+        }
+
+        return $fee;
     }
 }
