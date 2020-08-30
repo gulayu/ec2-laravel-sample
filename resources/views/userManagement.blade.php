@@ -57,6 +57,9 @@
                         <div class="col-12">
                             {{ Form::label('number', '管理番号(半角で入力)：', ['class' => 'd-block']) }}
                             {{ Form::number('number', 'value', ['class' => 'border-dark p-1']) }}
+                            @if($errors->has('number'))
+                                <p class="text-danger">{{$errors->first('number')}}</p>
+                            @endif
                         </div>
                     </div>
                     <div class="row mb-5">
@@ -111,6 +114,9 @@
                         <div class="col-12">
                             {{ Form::label('number', '管理番号(半角で入力)：', ['class' => 'd-block']) }}
                             {{ Form::number('number', 'value', ['class' => 'border-dark p-1']) }}
+                            @if($errors->has('number'))
+                                <p class="text-danger">{{$errors->first('number')}}</p>
+                            @endif
                         </div>
                     </div>
                     <div class="row mb-5">

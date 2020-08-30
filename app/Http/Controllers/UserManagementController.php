@@ -63,7 +63,6 @@ class UserManagementController extends Controller
                 'day_info'    => 'required|between:1,2',
                 'member_info' => 'required|between:1,2',
             ]);
-
             // Customerモデルを取得
             $customer = new Customer();
             // 入力値をセット
