@@ -155,4 +155,31 @@ class UserManagementController extends Controller
             'customers' => $customers,
         ]);
     }
+
+    /**
+     * 入退店編集
+     * 
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function edit($number) {
+        // 今日の日付を取得
+        $today = Carbon::today();
+        $today = str_replace(' 00:00:00', '', $today);
+
+        // 編集対象のユーザを取得
+        $customer = Customer::where(Customer::ENTER_TIME, 'LIKE', "$today%")
+                        ->where(Customer::NUMBER, $number)
+                        ->first();
+        dd($customer);
+
+
+
+
+
+
+
+        return view('userEdit')->with([
+            'number' => $number
+        ]);
+    }
 }

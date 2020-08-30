@@ -3,6 +3,7 @@
 namespace App\Model;
 
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class Customer extends Model
 {
@@ -28,6 +29,7 @@ class Customer extends Model
     const UNDER_JRHIGH_FEE = 500;
     const DRINKBAR_FEE = 500;
 
+    //------------テーブル表示用-----------------------
     // 個人orグループ
     public static function setMemberInfoDisplay($memberInfo) {
         return config('const.Customers.member_info')[$memberInfo];
@@ -46,5 +48,58 @@ class Customer extends Model
     // 中学生料金
     public static function setUnderJrhighDisplay($underJrhigh) {
         return config('const.Customers.under_jrhigh')[$underJrhigh];
+    }
+
+    //------------編集画面表示用-----------------------
+    // 入店・退店時間
+    public static function setTimeDisplay($date) {
+        $today = Carbon::today();
+        $today = str_replace(' 00:00:00', '', $today);
+
+        return str_replace("$today ", '', $date);
+    }
+
+    // 平日or休日
+    public static function isWeekday($day_info) {
+        if ($day_info === 1) {
+            return true;
+        }
+        return false;
+    }
+    public static function isWeekend($day_info) {
+        if ($day_info === 2) {
+            return true;
+        }
+        return false;
+    }
+
+    // 相席orグループ
+    public static function isSolo($member_info) {
+        if ($member_info === 1) {
+            return true;
+        }
+        return false;
+    }
+    public static function isGroup($member_info) {
+        if ($member_info === 2) {
+            return true;
+        }
+        return false;
+    }
+
+    // ドリンクバー利用有無
+    public static function hasDrinkbar($useDrinkbar) {
+        if ($useDrinkbar === 1) {
+            return true;
+        }
+        return false;
+    }
+
+    // 中学生かどうか
+    public static function isUnderJrhigh($underJrhigh) {
+        if ($underJrhigh === 1) {
+            return true;
+        }
+        return false;
     }
 }
