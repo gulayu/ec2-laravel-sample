@@ -16,3 +16,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/userManagement', 'UserManagementController@index')->name('userManagement');
+Route::post('/userManagement', 'UserManagementController@update')->name('userManagement_update');
