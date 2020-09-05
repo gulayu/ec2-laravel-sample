@@ -4,7 +4,7 @@
 <div class="container">
     <!-- 入店・退店処理のログ表示用 -->
     @isset($info)
-        @if($info->type == 'enter_time')
+        @if($info->type === 'enter_time')
         <div class="row mb-3">
             <div class="col-12">
                 <div class="card">

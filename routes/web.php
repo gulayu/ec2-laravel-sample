@@ -28,7 +28,7 @@ Route::post('/userManagement', 'UserManagementController@update')->name('userMan
 
 // テーブル編集
 Route::get('/userEdit/{number}', 'UserEditController@editEntry')->name('userEditEntry');
-Route::post('/userEdit', 'userEditController@edit')->name('userEdit');
+Route::post('/userEdit', 'UserEditController@edit')->name('userEdit');
 
 // 料金システム編集
 Route::get('/feeSystem', 'FeeSystemController@index')->name('feeSystem');

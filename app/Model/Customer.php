@@ -7,6 +7,7 @@ use Carbon\Carbon;
 
 class Customer extends Model
 {
+    const ID           = 'id';
     const NUMBER       = 'number';
     const ENTER_TIME   = 'enter_time';
     const EXIT_TIME    = 'exit_time';
