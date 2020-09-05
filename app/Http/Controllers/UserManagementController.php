@@ -27,17 +27,10 @@ class UserManagementController extends Controller
     public function index()
     {
         // 今日の日付を取得（Y-m-d）
-        $today = Carbon::today();
-        $today = str_replace(' 00:00:00', '', $today);
+        $today = Utility::getToday();
         
         // 今日の入退店状況を取得
-        $customers = Customer::where(Customer::ENTER_TIME, 'LIKE', "$today%")->get();
-
-        // 画面表示用に入店・退店時間のY-m-d部分を削除
-        foreach ($customers as $customer) {
-            $customer->enter_time = str_replace("$today ", '', $customer->enter_time);
-            $customer->exit_time  = str_replace("$today ", '', $customer->exit_time);
-        }
+        $customers = Utility::getTodayCustomers($today);
 
         return view('userManagement')->with([
             'customers' => $customers,
@@ -52,8 +45,7 @@ class UserManagementController extends Controller
     public function update(Request $request)
     {
         // 共通で使う値
-        $today = Carbon::today();
-        $today = str_replace(' 00:00:00', '', $today);
+        $today = Utility::getToday();
 
         // 入店時処理
         if($request->enter_time) {
@@ -63,7 +55,6 @@ class UserManagementController extends Controller
                 'day_info'    => 'required|between:1,2',
                 'member_info' => 'required|between:1,2',
             ]);
-
             // Customerモデルを取得
             $customer = new Customer();
             // 入力値をセット
@@ -143,17 +134,11 @@ class UserManagementController extends Controller
         }
 
         // 今日の入退店状況を取得
-        $customers = Customer::where(Customer::ENTER_TIME, 'LIKE', "$today%")->get();
-
-        // 画面表示用に入店・退店時間のY-m-d部分を削除
-        foreach ($customers as $customer) {
-            $customer->enter_time = str_replace("$today ", '', $customer->enter_time);
-            $customer->exit_time  = str_replace("$today ", '', $customer->exit_time);
-        }
+        $customers = Utility::getTodayCustomers($today);
 
         return view('userManagement')->with([
-            'info' => $info,
             'customers' => $customers,
+            'info'      => $info,
         ]);
     }
 }

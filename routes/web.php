@@ -26,6 +26,10 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/userManagement', 'UserManagementController@index')->name('userManagement');
 Route::post('/userManagement', 'UserManagementController@update')->name('userManagement_update');
 
+// テーブル編集
+Route::get('/userEdit/{number}', 'UserEditController@editEntry')->name('userEditEntry');
+Route::post('/userEdit', 'UserEditController@edit')->name('userEdit');
+
 // 料金システム編集
 Route::get('/feeSystem', 'FeeSystemController@index')->name('feeSystem');
 Route::post('/feeSystem', 'FeeSystemController@update')->name('feeSystem_update');
