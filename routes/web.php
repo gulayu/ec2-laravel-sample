@@ -17,6 +17,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/realtime', 'RealtimeController@index')->name('realtime');
+
 Auth::routes();
 
 // ホーム
