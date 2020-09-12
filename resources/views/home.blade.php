@@ -7,8 +7,7 @@
             <div class="card mb-5">
                 <div class="card-header">開発残task</div>
                 <div class="card-body">
-                    <p>テーブル修正処理</p>
-                    <p>リアルタイム状況確認（認証を入れない）</p>
+                    <p>リアルタイム状況確認のデザイン</p>
                     <p>統計情報</p>
                 </div>
             </div>
