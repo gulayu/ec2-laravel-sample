@@ -18,6 +18,10 @@ Route::get('/', function () {
 });
 
 Route::get('/realtime', 'RealtimeController@index')->name('realtime');
+Route::get('/booking', 'BookingController@index')->name('booking');
+Route::post('/booking', 'BookingController@index')->name('booking');
+Route::post('/booking_check', 'BookingController@check')->name('booking_check');
+Route::post('/booking_exec', 'BookingController@create')->name('booking_exec');
 
 Auth::routes();
 

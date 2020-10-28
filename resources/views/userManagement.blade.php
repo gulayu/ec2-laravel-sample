@@ -52,7 +52,7 @@
             <div class="card">
                 <div class="card-header">入店管理</div>
                 <div class="card-body">
-                    {!! Form::open(['route' => 'userManagement']) !!}
+                    {!! Form::open(['route' => 'userManagement_update']) !!}
                     <div class="row mb-5">
                         <div class="col-12">
                             {{ Form::label('number', '管理番号(半角で入力)：', ['class' => 'd-block']) }}
@@ -109,7 +109,7 @@
             <div class="card">
                 <div class="card-header">退店管理</div>
                 <div class="card-body">
-                    {!! Form::open(['route' => 'userManagement']) !!}
+                    {!! Form::open(['route' => 'userManagement_update']) !!}
                     <div class="row mb-5">
                         <div class="col-12">
                             {{ Form::label('number', '管理番号(半角で入力)：', ['class' => 'd-block']) }}
