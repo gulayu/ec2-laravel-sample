@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use App\Mail\BookingMail;
+use Mail;
 
 class BookingController extends Controller
 {
@@ -34,7 +36,7 @@ class BookingController extends Controller
         $minTime = '12:00:00';
         $maxTime = '19:00:00';
 
-        return view('booking')->with([
+        return view('booking.index')->with([
             'today'          => $today,
             'twoMonthsLater' => $twoMonthsLater,
             'step'           => $step,
@@ -66,7 +68,7 @@ class BookingController extends Controller
         $bookingInfo->mail      = $request->input('mail');
 
 
-        return view('booking_check')->with([
+        return view('booking.check')->with([
             'bookingInfo' => $bookingInfo
         ]);
     }
@@ -83,8 +85,20 @@ class BookingController extends Controller
             return redirect('booking')->withInput();
         }
 
-        // 予約の実行とメールの送信
-        
+        // メール送信
+        // TODO:メール送信まではOK。照会番号の添付
+        $content = collect();
+        $content->date      = $request->input('date');
+        $content->time      = $request->input('time');
+        $content->people    = $request->input('people');
+        $content->nickname  = $request->input('nickname');
+        $content->mail      = $request->input('mail');
+
+        Mail::to($content->mail)->send(new BookingMail($content));
+
+        return view('booking.complete')->with([
+
+        ]);
 
 
     }
