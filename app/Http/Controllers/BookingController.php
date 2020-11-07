@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Mail\BookingMail;
+use App\Model\Booking;
+use App\Services\Utility;
+use App\Http\Requests\BookingRequest;
 use Mail;
 
 class BookingController extends Controller
@@ -48,16 +51,10 @@ class BookingController extends Controller
     /**
      * 予約情報の確認
      */
-    public function check(Request $request)
+    public function check(BookingRequest $request)
     {
         // バリデーション
-        $validatedDataEnter = $request->validate([
-            'date'     => 'required|date',
-            'time'     => 'required|date_format:H:i',
-            'people'   => 'required|numeric|between:1,30',
-            'nickname' => 'required|string|between:1,20',
-            'mail'     => 'required|email'
-        ]);
+        $validated = $request->validated();
 
         // 入力情報の取得
         $bookingInfo = collect();
@@ -67,7 +64,6 @@ class BookingController extends Controller
         $bookingInfo->nickname  = $request->input('nickname');
         $bookingInfo->mail      = $request->input('mail');
 
-
         return view('booking.check')->with([
             'bookingInfo' => $bookingInfo
         ]);
@@ -76,23 +72,40 @@ class BookingController extends Controller
     /**
      * 予約の実行
      */
-    public function create(Request $request)
+    public function create(BookingRequest $request)
     {
+        // 予約の実行と修正ボタンのどちらを押したか確認
         $action = $request->get('do_booking', 'back');
 
-        // 戻るボタンを押した場合
+        // 戻るボタンを押した場合は入力画面に返す
         if($action === 'back') {
             return redirect('booking')->withInput();
         }
 
+        // バリデーション *booking_checkでバリデーションしてるので値は変わらない想定だが念のため
+        $validated = $request->validated();
+
+        // Bookingモデルを取得
+        $booking = new Booking();
+        // 入力値をセット
+        $date_tmp = $request->input('date') . ' ' . $request->input('time');
+        $booking->booking_number = Utility::generateRandomString();
+        $booking->booking_date   = new Carbon($date_tmp);
+        $booking->people         = $request->input('people');
+        $booking->nickname       = $request->input('nickname');
+        $booking->mail           = $request->input('mail');
+
+        // bookingテーブルに追加
+        $booking->save();
+
         // メール送信
-        // TODO:メール送信まではOK。照会番号の添付
         $content = collect();
-        $content->date      = $request->input('date');
-        $content->time      = $request->input('time');
-        $content->people    = $request->input('people');
-        $content->nickname  = $request->input('nickname');
-        $content->mail      = $request->input('mail');
+        $content->booking_number = $booking->booking_number;
+        $content->date           = $request->input('date');
+        $content->time           = $request->input('time');
+        $content->people         = $request->input('people');
+        $content->nickname       = $request->input('nickname');
+        $content->mail           = $request->input('mail');
 
         Mail::to($content->mail)->send(new BookingMail($content));
 

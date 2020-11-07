@@ -221,5 +221,15 @@ class Utility
         return $customers;
     }
 
-    
+    /**
+     * ランダムな文字列を生成
+     * 
+     * @param int $length
+     * 
+     * @return string
+     */
+    public static function generateRandomString($length = 6) {
+        return substr(str_shuffle('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, $length);
+    }
+
 }
