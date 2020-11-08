@@ -17,11 +17,20 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+// リアルタイム店内状況確認
 Route::get('/realtime', 'RealtimeController@index')->name('realtime');
+
+// 予約
 Route::get('/booking', 'BookingController@index')->name('booking');
 Route::post('/booking', 'BookingController@index')->name('booking');
 Route::post('/booking_check', 'BookingController@check')->name('booking_check');
 Route::post('/booking_exec', 'BookingController@create')->name('booking_exec');
+
+// 予約の変更
+Route::get('/booking/update', 'BookingUpdateController@index')->name('booking_update_index');
+Route::get('/booking/update_booking_number_check', 'BookingUpdateController@bookingNumberCheck');
+Route::post('/booking/update_booking_number_check', 'BookingUpdateController@bookingNumberCheck')->name('booking_number_check');
+Route::post('/booking/update_check', 'BookingUpdateController@check')->name('booking_update_check');
 
 Auth::routes();
 

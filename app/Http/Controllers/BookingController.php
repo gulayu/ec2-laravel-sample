@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Mail\BookingMail;
 use App\Model\Booking;
-use App\Services\Utility;
+use App\Services\BookingUtility;
 use App\Http\Requests\BookingRequest;
 use Mail;
 
@@ -31,13 +31,13 @@ class BookingController extends Controller
     public function index(Request $request)
     {
         // カレンダーの入力値制限用
-        $today = Carbon::now();
-        $twoMonthsLater = Carbon::now()->addMonth(2)->format('Y-m-d');
+        $today = BookingUtility::getToday();
+        $twoMonthsLater = BookingUtility::getTwoMonthsLater();
 
         // 時刻の入力値制限用
-        $step    = '900';
-        $minTime = '12:00:00';
-        $maxTime = '19:00:00';
+        $step    = BookingUtility::TIME_STEP;
+        $minTime = BookingUtility::TIME_MINTIME;
+        $maxTime = BookingUtility::TIME_MAXTIME;
 
         return view('booking.index')->with([
             'today'          => $today,
@@ -89,7 +89,7 @@ class BookingController extends Controller
         $booking = new Booking();
         // 入力値をセット
         $date_tmp = $request->input('date') . ' ' . $request->input('time');
-        $booking->booking_number = Utility::generateRandomString();
+        $booking->booking_number = BookingUtility::generateRandomString();
         $booking->booking_date   = new Carbon($date_tmp);
         $booking->people         = $request->input('people');
         $booking->nickname       = $request->input('nickname');

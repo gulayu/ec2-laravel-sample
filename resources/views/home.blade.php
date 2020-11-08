@@ -8,7 +8,9 @@
                 <div class="card-header">開発残task</div>
                 <div class="card-body">
                     <p>リアルタイム状況確認のデザイン</p>
-                    <p>統計情報</p>
+                    <p>予約画面のデザイン</p>
+                    <p>予約状況をダッシュボードに追加</p>
+                    <p>統計情報はリリース後の機能拡張で追加</p>
                 </div>
             </div>
 
