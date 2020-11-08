@@ -194,7 +194,6 @@ class Utility
      * 今日の日付を取得
      * 
      * @return string YYYY-mm-dd
-     * 
      */
     public static function getToday() {
         $today = Carbon::today();
@@ -220,6 +219,4 @@ class Utility
         
         return $customers;
     }
-
-    
 }

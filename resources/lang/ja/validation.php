@@ -25,8 +25,8 @@ return [
     'before_or_equal'      => ':attributeには、:date以前の日付をご利用ください。',
     'between'              => [
         'numeric' => ':attributeは、:minから:maxの間で指定してください。',
-        'file'    => ':attributeは、:min kBから、:max kBの間で指定してください。',
-        'string'  => ':attributeは、:min文字から、:max文字の間で指定してください。',
+        'file'    => ':attributeは、:min kBから:max kBの間で指定してください。',
+        'string'  => ':attributeは、:min文字から:max文字の間で指定してください。',
         'array'   => ':attributeは、:min個から:max個の間で指定してください。',
     ],
     'boolean'              => ':attributeは、trueかfalseを指定してください。',
@@ -129,8 +129,14 @@ return [
     */
 
     'custom' => [
+        // 入店・退店管理画面
         'number' => [
             'required' => '管理番号は必ず指定してください',
+        ],
+
+        // 予約画面
+        'date' => [
+            'after' => '明日以降の日付を指定してください'
         ],
     ],
 
@@ -145,6 +151,16 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => [
+        // 予約
+        'date' => '日付',
+        'time' => '時刻',
+        'people' => '人数',
+        'nickname' => 'ニックネーム',
+        'mail' => 'メールアドレス',
+
+        // 予約変更
+        'booking_number' => '予約番号',
+    ],
 
 ];
