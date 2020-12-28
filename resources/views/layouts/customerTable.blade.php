@@ -11,7 +11,7 @@
                         <th scope="col">顧客属性</th>
                         <th scope="col">区分</th>
                         <th scope="col">ドリンクバー</th>
-                        <th scope="col">中学生以下</th>
+                        <th scope="col">小学生以下</th>
                         <th scope="col">料金</th>
                         <th scope="col">メモ</th>
                         <th scope="col"></th>

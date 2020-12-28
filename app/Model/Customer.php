@@ -46,7 +46,7 @@ class Customer extends Model
         return config('const.Customers.use_drinkbar')[$useDrinkbar];
     }
 
-    // 中学生料金
+    // 小学生料金
     public static function setUnderJrhighDisplay($underJrhigh) {
         return config('const.Customers.under_jrhigh')[$underJrhigh];
     }
@@ -96,7 +96,7 @@ class Customer extends Model
         return false;
     }
 
-    // 中学生かどうか
+    // 小学生かどうか
     public static function isUnderJrhigh($underJrhigh) {
         if ($underJrhigh === 1) {
             return true;

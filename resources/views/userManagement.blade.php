@@ -15,7 +15,7 @@
                         <p>区分：{{ App\Model\Customer::setDayInfoDisplay($info->day_info) }}</p>
                         <p>顧客属性：{{ App\Model\Customer::setMemberInfoDisplay($info->member_info) }}</p>
                         <p>ドリンクバー利用：{{ App\Model\Customer::setUseDrinkbarDisplay($info->use_drinkbar) }}</p>
-                        <p>中学生以下：{{ App\Model\Customer::setUnderJrhighDisplay($info->under_jrhigh) }}</p>
+                        <p>小学生以下：{{ App\Model\Customer::setUnderJrhighDisplay($info->under_jrhigh) }}</p>
                     </div>
                 </div>
             </div>
@@ -91,7 +91,7 @@
                                 {{ Form::checkbox('use_drinkbar', '1', false ) }} ドリンクバー利用
                             </label>
                             <label>
-                                {{ Form::checkbox('under_jrhigh', '1', false, ['class' => 'ml-3']) }} 中学生以下
+                                {{ Form::checkbox('under_jrhigh', '1', false, ['class' => 'ml-3']) }} 小学生以下
                             </label>
                         </div>
                     </div>

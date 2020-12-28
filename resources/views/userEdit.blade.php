@@ -77,7 +77,7 @@
                             {{ Form::checkbox('use_drinkbar', '1', $targetCustomer->hasDrinkbar($targetCustomer->use_drinkbar)) }} ドリンクバー利用
                         </label>
                         <label>
-                            {{ Form::checkbox('under_jrhigh', '1', $targetCustomer->isUnderJrhigh($targetCustomer->under_jrhigh), ['class' => 'ml-3']) }} 中学生以下
+                            {{ Form::checkbox('under_jrhigh', '1', $targetCustomer->isUnderJrhigh($targetCustomer->under_jrhigh), ['class' => 'ml-3']) }} 小学生以下
                         </label>
                     </div>
                 </div>
