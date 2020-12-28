@@ -5,16 +5,6 @@
     <div class="row">
         <div class="col-12">
             <div class="card mb-5">
-                <div class="card-header">開発残task</div>
-                <div class="card-body">
-                    <p>リアルタイム状況確認のデザイン</p>
-                    <p>予約画面のデザイン</p>
-                    <p>予約状況をダッシュボードに追加</p>
-                    <p>統計情報はリリース後の機能拡張で追加</p>
-                </div>
-            </div>
-
-            <div class="card mb-5">
                 <div class="card-header">管理画面使い方メモ</div>
                 <div class="card-body">
                     <p>画面右上のユーザ名の部分をクリックするとメニューが表示されます。</p>
