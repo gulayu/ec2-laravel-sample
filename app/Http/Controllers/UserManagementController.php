@@ -100,7 +100,7 @@ class UserManagementController extends Controller
             $checkSameNumber = Customer::where(Customer::NUMBER, $request->input('number'))->count();
             // 同じ番号がない場合、レコードを追加せずエラーを返す
             if ($checkSameNumber === 0) {
-                return redirect('userManagement')->with('exit_time_error', '当日の管理表に同じ管理番号が存在しませんでした');
+                return redirect('userManagement')->with('exit_time_error', '当日の管理表に指定の管理番号が存在しませんでした');
             }
 
             // 対象のレコードを取得
