@@ -48,6 +48,9 @@
         </div>
     @endif
     <div class="row">
+        <div class="col-12">
+            @include('layouts/links')
+        </div>
         <div class="col-sm-6 mb-3">
             <div class="card">
                 <div class="card-header">入店管理</div>
