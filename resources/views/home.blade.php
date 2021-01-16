@@ -4,6 +4,7 @@
 <div class="container">
     <div class="row">
         <div class="col-12">
+            @include('layouts/links')
             <div class="card mb-5">
                 <div class="card-header">管理画面使い方メモ</div>
                 <div class="card-body">
